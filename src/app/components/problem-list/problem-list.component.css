@@ -1,0 +1,41 @@
+.container {
+  max-width: 1000px;
+  margin: auto;
+  padding: 24px;
+}
+
+/* mat-table'ga moslashtirish */
+table {
+  width: 100%;
+}
+
+/* paginator joylashuvi */
+mat-paginator {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+/* Mat-table head va cell lariga qo‘shimcha bezak (ixtiyoriy) */
+.mat-header-cell {
+  font-weight: bold;
+  background-color: #f0f0f0;
+}
+
+.mat-row:hover {
+  background-color: #f9f9f9;
+  cursor: pointer;
+}
+
+.filters {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.filters input {
+  padding: 6px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+

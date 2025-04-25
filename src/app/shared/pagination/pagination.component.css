@@ -1,0 +1,32 @@
+.mat-pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2px;
+    margin-top: 16px;
+  }
+  
+  .mat-pagination button {
+    border: 1px solid #ccc;
+    background: #f9f9f9;
+    padding: 3px 5px;
+    cursor: pointer;
+    font-size: 14px;
+  }
+  
+  .mat-pagination button:hover:not(:disabled) {
+    background: #e0e0e0;
+  }
+  
+  .mat-pagination button.active {
+    background-color: #3f51b5;
+    color: #fff;
+    border-color: #3f51b5;
+  }
+  
+  .ellipsis {
+    padding: 3px 5px;
+    font-size: 14px;
+    color: rgba(0,0,0,0.54);
+  }
+  
