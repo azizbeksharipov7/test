@@ -10,18 +10,17 @@ import { MatCardModule } from '@angular/material/card';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatButtonModule } from '@angular/material/button';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { PaginationComponent } from './shared/pagination/pagination.component';
-import { MatIconModule }   from '@angular/material/icon';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { FormsModule } from '@angular/forms'
+import { FormsModule } from '@angular/forms';
+import { MatIconModule } from '@angular/material/icon';
+import { MatChipListbox, MatChipsModule } from '@angular/material/chips';
 
 @NgModule({
   declarations: [
     AppComponent,
     ProblemListComponent,
-    PaginationComponent
   ],
   imports: [
     BrowserModule,
@@ -33,7 +32,9 @@ import { FormsModule } from '@angular/forms'
     MatSortModule,
     MatTableModule,
     MatProgressSpinnerModule,
-    FormsModule
+    FormsModule,
+    MatChipsModule,
+    MatChipListbox
   ],
   providers: [ provideHttpClient(), provideAnimationsAsync()],
   bootstrap: [AppComponent]

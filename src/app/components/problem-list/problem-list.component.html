@@ -2,53 +2,103 @@
 
   <!-- FILTER INPUTS -->
   <div class="filters">
-    <input type="text" placeholder="Filter by Title" [(ngModel)]="filters.title" (input)="applyFilters()" />
-    <input type="text" placeholder="Filter by Solved" [(ngModel)]="filters.has_solution" (input)="applyFilters()" />
+    <input type="text" placeholder="Filter by Title" [(ngModel)]="filters.title" (input)="onSearchChange()" />
+
+    <select [(ngModel)]="filters.has_checker" (change)="onSearchChange()">
+      <option value="">All Checker</option>
+      <option value="true">Has Checker</option>
+      <option value="false">No Checker</option>
+    </select>
+    <select [(ngModel)]="filters.has_solution" (change)="onSearchChange()">
+      <option value="">All Solution</option>
+      <option value="true">Has Solution</option>
+      <option value="false">No Solution</option>
+    </select>
   </div>
 
-  <!-- PROBLEM TABLE -->
+  <!-- TABLE -->
   <div class="mat-elevation-z8">
-    <table mat-table [dataSource]="problems" class="mat-table" multiTemplateDataRows>
+    <div *ngIf="isLoading" class="loading_content fade-in">
+      <div class="loader"></div>
+      <p class="loading_text">Loading problems...</p>
+    </div>
 
-      <!-- TITLE -->
+    <table *ngIf="!isLoading && problems.length" mat-table [dataSource]="problems" class="mat-table" multiTemplateDataRows>
+      
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef (click)="sort('id')">
+          ID
+          <mat-icon *ngIf="sortColumn === 'id'">
+            {{ sortDirection === 'asc' ? 'arrow_upward' : 'arrow_downward' }}
+          </mat-icon>
+        </th>
+        
+        <td mat-cell *matCellDef="let problem">{{ problem.id }}</td>
+      </ng-container>
+
       <ng-container matColumnDef="title">
-        <th mat-header-cell *matHeaderCellDef (click)="sort('title')">
-          Title <span *ngIf="sortColumn === 'title'">({{ sortDirection }})</span>
-        </th>
-        <td mat-cell *matCellDef="let problem"> {{ problem.title }} </td>
+        <th mat-header-cell *matHeaderCellDef (click)="sort('title')">Title</th>
+        <td mat-cell *matCellDef="let problem">{{ problem.title }}</td>
       </ng-container>
 
-      <!-- DIFFICULTY -->
-      <ng-container matColumnDef="difficulty">
-        <th mat-header-cell *matHeaderCellDef> Difficulty </th>
-        <td mat-cell *matCellDef="let problem"> {{ problem.difficultyTitle }} </td>
+      <ng-container matColumnDef="difficultyTitle">
+        <th mat-header-cell *matHeaderCellDef>Difficulty</th>
+        <td mat-cell *matCellDef="let problem">{{ problem.difficultyTitle }}</td>
       </ng-container>
 
-      <!-- SOLVED -->
-      <ng-container matColumnDef="has_solution">
-        <th mat-header-cell *matHeaderCellDef (click)="sort('has_solution')">
-          Solved <span *ngIf="sortColumn === 'has_solution'">({{ sortDirection }})</span>
-        </th>
-        <td mat-cell *matCellDef="let problem"> {{ problem.has_solution }} </td>
-      </ng-container>
-
-      <!-- TAGS -->
-      <ng-container matColumnDef="tags">
-        <th mat-header-cell *matHeaderCellDef> Tags </th>
+      <ng-container matColumnDef="has_checker">
+        <th mat-header-cell *matHeaderCellDef>Checker</th>
         <td mat-cell *matCellDef="let problem">
-          <ng-container *ngFor="let tag of problem.tags; let last = last">
-            {{ tag.name }}<span *ngIf="!last">, </span>
-          </ng-container>
+          <mat-icon *ngIf="problem.has_checker" color="primary">check_circle</mat-icon>
+          <mat-icon *ngIf="!problem.has_checker" color="warn">cancel</mat-icon>
         </td>
       </ng-container>
 
-      <!-- ROWS -->
+      <ng-container matColumnDef="has_solution">
+        <th mat-header-cell *matHeaderCellDef>Solved</th>
+        <td mat-cell *matCellDef="let problem">
+          <mat-icon *ngIf="problem.has_solution" color="primary">check_circle</mat-icon>
+          <mat-icon *ngIf="!problem.has_solution" color="warn">highlight_off</mat-icon>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="rating">
+        <th mat-header-cell *matHeaderCellDef> Rating </th>
+        <td mat-cell *matCellDef="let problem">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <div style="display: flex; align-items: center; gap: 4px;">
+              <mat-icon color="primary">thumb_up</mat-icon>
+              <span>{{ problem.rating.likes }}</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 4px;">
+              <mat-icon color="warn">thumb_down</mat-icon>
+              <span>{{ problem.rating.dislikes }}</span>
+            </div>
+          </div>
+        </td>
+      </ng-container>
+      
+      
+
+      <ng-container matColumnDef="tags">
+        <th mat-header-cell *matHeaderCellDef>Tags</th>
+        <td mat-cell *matCellDef="let problem">
+          <mat-chip-listbox>
+            <mat-chip *ngFor="let tag of problem.tags">{{ tag.name }}</mat-chip>
+          </mat-chip-listbox>
+        </td>
+      </ng-container>
+
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
+
+    <div *ngIf="!isLoading && !problems.length" class="no_result_content">
+      <img class="no_result_img" src="no-search-result-icon.svg" alt="No problems">
+      <p class="no_result_text">No results found</p>
+    </div>
   </div>
 
-  <!-- PAGINATION -->
   <mat-paginator
     [length]="totalProblems"
     [pageSize]="pageSize"
@@ -56,11 +106,4 @@
     (page)="onPageChange($event)">
   </mat-paginator>
 
-  <!-- NO RESULTS / LOADING -->
-  <div *ngIf="!problems.length && !isLoading">
-    <p>No problems found.</p>
-  </div>
-  <div *ngIf="isLoading">
-    <p>Loading problems...</p>
-  </div>
 </div>
