@@ -12,7 +12,7 @@ export class ProblemService {
 
   getProblems(
     page: number = 1,
-    pageSize: number = 5,
+    pageSize: number = 10,
     title: string = '',
     has_checker: string = '',
     has_solution: string = '',
@@ -21,7 +21,7 @@ export class ProblemService {
   ): Observable<any> {
     let params = new HttpParams()
       .set('page', page)
-      .set('pageSize', pageSize);
+      .set('page_size', pageSize);
 
     if (title) params = params.set('title', title);
     if (has_checker) params = params.set('has_checker', has_checker);

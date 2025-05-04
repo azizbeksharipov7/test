@@ -5,9 +5,10 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ProblemListComponent } from './components/problem-list/problem-list.component';
 import { provideHttpClient } from '@angular/common/http';
+import { CustomPaginator } from './components/custom-paginator/custom-paginator.component';
 
 import { MatCardModule } from '@angular/material/card';
-import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatButtonModule } from '@angular/material/button';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { MatSortModule } from '@angular/material/sort';
@@ -16,6 +17,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { MatChipListbox, MatChipsModule } from '@angular/material/chips';
+
+import { MatPaginatorIntl } from '@angular/material/paginator';
 
 @NgModule({
   declarations: [
@@ -34,9 +37,13 @@ import { MatChipListbox, MatChipsModule } from '@angular/material/chips';
     MatProgressSpinnerModule,
     FormsModule,
     MatChipsModule,
-    MatChipListbox
+    MatChipListbox,
+    MatPaginator
   ],
-  providers: [ provideHttpClient(), provideAnimationsAsync()],
+  providers: [ provideHttpClient(), provideAnimationsAsync(),
+    { provide: MatPaginatorIntl, useValue: CustomPaginator() }
+
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

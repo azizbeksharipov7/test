@@ -21,7 +21,7 @@ interface Problem {
 export class ProblemListComponent implements OnInit, OnDestroy {
   problems: Problem[] = [];
   page = 1;
-  pageSize = 5;
+  pageSize = 12;
   totalProblems = 0;
   isLoading = false;
 
